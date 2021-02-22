@@ -1,0 +1,22 @@
+{% extends 'moodle/base.html' %}
+
+{% block content %}
+<h2>Lesson: {{ lesson.title }}</h2>
+<h3>Course: {{ lesson.course.name }}</h3>
+<h5>By {% for teacher in lesson.course.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }},{% endfor %}</h5>
+<h6>
+  Published: {{lesson.publication_date|date:"d.m.Y" }}. Last modified: {{ lesson.modification_date|date:"d.m.Y" }}
+</h6>
+
+{{ lesson.text|linebreaks }}
+
+{% for question in questions %}
+<p>{{ question.asker.first_name }} {{ question.asker.last_name }}</p>
+<p>{{ question.ask_date }}</p>
+<p>{{ question.text }}</p>
+<p>{{ question.answerer.first_name }} {{ question.answerer.last_name }}</p>
+<p>{{ question.answer_date }}</p>
+<p>{{ question.answer_text }}</p>
+{% endfor %}
+
+{% endblock %}

@@ -43,4 +43,4 @@ class Question(models.Model):
     answer_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return str(self.lesson.id)
+        return '{} – {}'.format(self.lesson.title, self.id)
