@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+
+<head>
+  <title>Moodle</title>
+</head>
+
+<body>
+  <div class="page-header">
+    {% if user.is_authenticated %}
+    <p>Logged in.</p>
+    {% else %}
+    <p>Not logged in.</p>
+    {% endif %}
+    <h1>Moodle</h1>
+  </div>
+
+  <div class="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+
+</html>
