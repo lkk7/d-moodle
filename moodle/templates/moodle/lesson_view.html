@@ -3,8 +3,7 @@
 {% block content %}
 <h2>Lesson: {{ lesson.title }}</h2>
 <h3>Course: {{ lesson.course.name }}</h3>
-<h5>By {% for teacher in lesson.course.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }}{% if not
-  forloop.last %}, {% endif %}{% endfor %}</h5>
+<h5>By {% for teacher in lesson.course.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }}, {% endfor %}</h5>
 <h6>
   Published: {{lesson.publication_date|date:"d.m.Y" }}. Last modified: {{ lesson.modification_date|date:"d.m.Y" }}
 </h6>
