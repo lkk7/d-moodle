@@ -36,7 +36,7 @@ class Question(models.Model):
     answerer = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='questions_answered', null=True, blank=True)
-    text = models.TextField()
+    text = models.TextField(max_length=1000)
     answer_text = models.TextField(blank=True)
     answered = models.BooleanField(default=False)
     ask_date = models.DateTimeField(default=timezone.now)

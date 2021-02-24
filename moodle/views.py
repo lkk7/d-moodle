@@ -1,7 +1,11 @@
-from django.shortcuts import HttpResponse
-from .models import Course, Lesson, Question
-from django.views import generic
 from django.db.models import Q
+from django.views import generic
+from django.contrib import messages
+from django.utils import timezone
+from .forms import QuestionAskForm
+from .models import Course, Lesson, Question
+from django.shortcuts import redirect, render, reverse
+from django.http import HttpResponse, HttpResponseForbidden
 
 
 def index(request):
@@ -29,7 +33,38 @@ class LessonDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['questions'] = Question.objects.filter(
             lesson=self.get_object())
+        if 'form' in self.kwargs:
+            context['form'] = self.kwargs['form']
+        else:
+            context['form'] = QuestionAskForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = QuestionAskForm(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.lesson = self.get_object()
+            question.asker = request.user
+            question.save()
+            return redirect('moodle:lesson_view', pk=self.get_object().pk)
+        messages.error(self.request,
+                       "The question has to be shorter than 500 characters.")
+        return redirect('moodle:lesson_view', pk=self.get_object().pk)
+
+
+class QuestionAnswerFormView(generic.UpdateView):
+    fields = ('answer_text',)
+    template_name = 'moodle/question_answer_form.html'
+
+    def get_object(self):
+        return Question.objects.get(pk=self.kwargs['question_pk'],
+                                    lesson__pk=self.kwargs['lesson_pk'])
+
+    def form_valid(self, form):
+        self.object.answerer = self.request.user
+        self.object.answer_date = timezone.now()
+        form.save()
+        return redirect('moodle:lesson_view', pk=self.object.lesson.id)
 
 
 class CourseListView(generic.ListView):

@@ -1,0 +1,18 @@
+{% extends 'moodle/base.html' %}
+
+{% block content %}
+<h2>Lesson: {{ question.lesson.title }}</h2>
+<h3>Question by {{ question.asker.first_name }} {{ question.asker.last_name }}</h3>
+<p>{{ question.text }}</p>
+
+<h3>Answer the question:</h3>
+<form action="{% url 'moodle:question_answer_form' lesson_pk=question.lesson.pk question_pk=question.pk%}" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Submit">
+</form>
+{% if messages %}
+{% for message in messages %}<p>{{ message }}</p>{% endfor %}
+{% endif %}
+
+{% endblock %}

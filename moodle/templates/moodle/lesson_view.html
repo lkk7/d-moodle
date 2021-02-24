@@ -3,13 +3,26 @@
 {% block content %}
 <h2>Lesson: {{ lesson.title }}</h2>
 <h3>Course: {{ lesson.course.name }}</h3>
-<h5>By {% for teacher in lesson.course.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }}, {% endfor %}</h5>
+<h5>
+  By {% for teacher in lesson.course.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }}, {% endfor %}
+</h5>
 <h6>
   Published: {{lesson.publication_date|date:"d.m.Y" }}. Last modified: {{ lesson.modification_date|date:"d.m.Y" }}
 </h6>
 
 {{ lesson.text|linebreaks }}
 
+<h3>Ask teachers a question</h3>
+<form action="{% url 'moodle:lesson_view' pk=lesson.pk %}" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Submit">
+</form>
+{% if messages %}
+{% for message in messages %}<p>{{ message }}</p>{% endfor %}
+{% endif %}
+
+<h3>Questions</h3>
 {% for question in questions %}
 <p>{{ question.asker.first_name }} {{ question.asker.last_name }}</p>
 <p>{{ question.ask_date }}</p>
