@@ -1,0 +1,15 @@
+{% extends 'moodle/base.html' %}
+
+{% block content %}
+<h2>Lesson: {{ question.lesson.title }}</h2>
+<h3>Question by {{ question.asker.first_name }} {{ question.asker.last_name }}</h3>
+<p>{{ question.text }}</p>
+
+<h3>Create a new lesson:</h3>
+<form action="{% url 'moodle:lesson_add' %}" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

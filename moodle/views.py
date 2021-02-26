@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.views import generic
 from django.contrib import messages
 from django.utils import timezone
-from .forms import QuestionAskForm
+from .forms import QuestionAskForm, LessonAddForm
 from .models import Course, Lesson, Question
 from django.shortcuts import redirect, render, reverse
 from django.http import HttpResponse, HttpResponseForbidden
@@ -50,6 +50,19 @@ class LessonDetailView(generic.DetailView):
         messages.error(self.request,
                        "The question has to be shorter than 500 characters.")
         return redirect('moodle:lesson_view', pk=self.get_object().pk)
+
+
+class LessonAddView(generic.CreateView):
+    template_name = 'moodle/lesson_add_form.html'
+    form_class = LessonAddForm
+
+    def get_success_url(self):
+        return reverse('moodle:lesson_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_id'] = self.request.user.id
+        return kwargs
 
 
 class QuestionAnswerFormView(generic.UpdateView):
