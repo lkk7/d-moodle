@@ -1,21 +1,16 @@
 from django.db.models import Q
 from django.views import generic
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
-from .forms import QuestionAskForm, LessonAddForm
-from .models import Course, Lesson, Question
 from django.shortcuts import redirect, render, reverse
 from django.http import HttpResponse, HttpResponseForbidden
 
-
-def index(request):
-    if request.user.is_authenticated:
-        return HttpResponse('index.')
-    else:
-        return HttpResponse('index. log in.')
+from .forms import QuestionAskForm, LessonAddForm
+from .models import Course, Lesson, Question
 
 
-class LessonListView(generic.ListView):
+class LessonListView(LoginRequiredMixin, generic.ListView):
     template_name = 'moodle/lesson_list.html'
 
     def get_queryset(self):
@@ -25,7 +20,7 @@ class LessonListView(generic.ListView):
         ).distinct()
 
 
-class LessonDetailView(generic.DetailView):
+class LessonDetailView(LoginRequiredMixin, generic.DetailView):
     model = Lesson
     template_name = 'moodle/lesson_view.html'
 
@@ -52,7 +47,7 @@ class LessonDetailView(generic.DetailView):
         return redirect('moodle:lesson_view', pk=self.get_object().pk)
 
 
-class LessonAddView(generic.CreateView):
+class LessonAddView(LoginRequiredMixin, generic.CreateView):
     template_name = 'moodle/lesson_add_form.html'
     form_class = LessonAddForm
 
@@ -65,7 +60,7 @@ class LessonAddView(generic.CreateView):
         return kwargs
 
 
-class QuestionAnswerFormView(generic.UpdateView):
+class QuestionAnswerFormView(LoginRequiredMixin, generic.UpdateView):
     fields = ('answer_text',)
     template_name = 'moodle/question_answer_form.html'
 
@@ -80,7 +75,7 @@ class QuestionAnswerFormView(generic.UpdateView):
         return redirect('moodle:lesson_view', pk=self.object.lesson.id)
 
 
-class CourseListView(generic.ListView):
+class CourseListView(LoginRequiredMixin, generic.ListView):
     template_name = 'moodle/course_list.html'
 
     def get_queryset(self):
@@ -90,7 +85,7 @@ class CourseListView(generic.ListView):
         ).distinct()
 
 
-class CourseDetailView(generic.DetailView):
+class CourseDetailView(LoginRequiredMixin, generic.DetailView):
     model = Course
     template_name = 'moodle/course_view.html'
 
