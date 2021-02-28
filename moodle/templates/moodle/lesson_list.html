@@ -2,11 +2,16 @@
 
 {% block content %}
 
-<h2>Lessons:</h2>
+<h1>Lessons:</h1>
 {% for lesson in lesson_list %}
-<p>{{ lesson.title }}</p>
-<p>Course: {{ lesson.course }}</p>
-<p>Published: {{lesson.publication_date|date:"d.m.Y" }}. Last modified: {{ lesson.modification_date|date:"d.m.Y" }}</p>
+<div class="course">
+  <hr>
+  <a href="{% url 'moodle:lesson_view' pk=lesson.pk %}">
+    <h2>{{ lesson.title }}</h2>
+  </a>
+  <small>Course: {{ lesson.course }}</small>
+  <small>Published: {{ lesson.publication_date|date:"d.m.Y" }}. Last modified: {{ lesson.modification_date|date:"d.m.Y" }}</small>
+</div>
 {% endfor %}
 
 {% endblock %}

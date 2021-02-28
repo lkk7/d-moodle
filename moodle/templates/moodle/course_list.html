@@ -2,12 +2,15 @@
 
 {% block content %}
 
-<h2>Courses:</h2>
+<h1>Your Courses:</h1>
 {% for course in course_list %}
-<p>{{ course.name }}</p>
-<p>By {% for teacher in course.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }}{% if not forloop.last %},
-  {% endif %}{% endfor %}</p>
-<p>Created: {{ course.creation_date }}</p>
+<div class="course">
+  <hr>
+  <a href="{% url 'moodle:course_view' pk=course.pk %}"><h2>{{ course.name }}</h2></a>
+  <small>By {% for teacher in course.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }}{% if not forloop.last %},
+    {% endif %}{% endfor %}</small>
+  <small class="date">Created: {{ course.creation_date }}</small>
+</div>
 {% endfor %}
 
 {% endblock %}

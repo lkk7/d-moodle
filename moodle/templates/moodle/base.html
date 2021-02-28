@@ -1,25 +1,41 @@
 {% load static %}
+{% load user_check_group %}
 <!DOCTYPE html>
+<html>
 
 <head>
+  <meta charset="utf-8">
   <title>Moodle</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="{% static 'css/moodle.css' %}">
 </head>
 
 <body>
-  <div class="page-header">
-    {% if user.is_authenticated %}
-    <p>Logged in.</p>
-    {% else %}
-    <p>Not logged in.</p>
-    {% endif %}
-    <h1>Moodle</h1>
-  </div>
+  {% if user.is_authenticated %}
+  <nav>
+    <div class="nav-left">
+      <h1>d-moodle</h1>
+      <h1>Logged in as {{ user.first_name }} ({% if user|has_group:'Teachers' %}teacher{% else %}student{% endif %}). Hello!</h1>
+    </div>
+    <div class="nav-right">
+      {% if user|has_group:"Teachers" %}
+      <a href="{% url 'moodle:lesson_add' %}">Add New Lesson</a>
+      {% endif %}
+      <a href="{% url 'moodle:lesson_list' %}">Your Lessons</a>
+      <a href="{% url 'moodle:course_list' %}">Your Courses</a>
+      <a href="{% url 'authentication:logout' %}">Logout</a>
+    </div>
+  </nav>
+  {% endif %}
 
-  <div class="content">
-    {% block content %}
-    {% endblock %}
+  <div class="content-wrapper">
+    <div class="content">
+      {% block content %}
+      {% endblock %}
+    </div>
   </div>
 </body>
 

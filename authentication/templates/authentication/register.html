@@ -1,16 +1,14 @@
 {% extends 'moodle/base.html' %}
 
 {% block content %}
-<h2>Sign up</h2>
+<h1>Sign up</h1>
 <form method="post">
   {% csrf_token %}
   {% for field in form %}
-  <div>{{ field.label_tag }}<br>
-    {{ field }}
-    {% for error in field.errors %}
-    <p style="color: red">{{ error }}</p>
-    {% endfor %}
-  </div>
+  <div><div>{{ field.label_tag }}</div><div>{{ field }}</div></div>
+  {% for error in field.errors %}
+  <p style="color: red">{{ error }}</p>
+  {% endfor %}
   {% endfor %}
   <button type="submit">Sign up</button>
 </form>

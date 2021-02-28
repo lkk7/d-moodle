@@ -1,15 +1,18 @@
 {% extends 'moodle/base.html' %}
 
 {% block content %}
-<h2>Course: {{ course.name }}</h2>
-<h5>By {% for teacher in course.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }}{% if not forloop.last
-  %}, {% endif %}{% endfor %}</h5>
-<h6>Created: {{ course.creation_date }}</h6>
+<div class="course">
+  <h2>Course: {{ course.name }}</h2>
+  <h5>By {% for teacher in course.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</h5>
+  <h6>Created: {{ course.creation_date }}</h6>
 
-<h3>Lessons in this course:</h3>
-{% for lesson in lessons %}
-<p>{{ lesson.title }}</p>
-<p>Published: {{lesson.publication_date|date:"d.m.Y" }}. Last modified: {{ lesson.modification_date|date:"d.m.Y" }}</p>
-{% endfor %}
+  <h2>Lessons in this course:</h2>
+  {% for lesson in lessons %}
+  <div class="lesson">
+    <a href="{% url 'moodle:lesson_view' pk=lesson.pk %}"><h3>{{ lesson.title }}</h3></a>
+    <small>Published: {{lesson.publication_date|date:"d.m.Y" }}. Last modified: {{ lesson.modification_date|date:"d.m.Y" }}</small>
+  </div>
+  {% endfor %}
+</div>
 
 {% endblock %}

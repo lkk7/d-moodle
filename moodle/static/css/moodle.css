@@ -1,0 +1,96 @@
+body {    
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+}
+
+nav {
+  width: 100%;
+  background-color: #303070;
+  display: flex;
+  justify-content: space-between;
+}
+
+nav a, nav h1 {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-weight: normal;
+  padding: 10px 30px 10px 30px;
+  margin: 0;
+  font-size: 20px;
+}
+
+nav a:hover {
+  background-color: #101050;
+}
+
+.nav-left, .nav-right {
+  display: inline-flex;
+}
+
+.content-wrapper {
+  height: 100vh;
+}
+
+.content {
+  width: 50%;
+  margin: 50px auto;
+  padding: 20px;
+  border: 2px solid #303070;
+  border-radius: 15px;
+}
+
+.content h1 {
+  text-align: center;
+}
+
+footer, footer a {
+  background-color: #303070;
+  color: white;
+  text-align: center;
+}
+
+form {
+  width: 500px;
+  max-width: 100%;
+  padding: 10px;
+  margin: 10px auto 50px auto;
+  text-align: center;
+  border: 1px solid #303070;
+}
+
+form span {
+  display: block;
+}
+
+.error {
+  color: #ff0000;
+  font-weight: bold;
+  text-align: center;
+}
+
+form div div {
+  margin: 10px;
+}
+
+.course {
+  text-align: center;
+}
+
+.course h2, .lesson h2 {
+  margin: 30px 0 10px 0;
+}
+
+.course small, .lesson small, .question small{
+  display: block;
+}
+
+.course small.date, .lesson small.date{
+  margin-bottom: 15px;
+}
+
+.question {
+  margin: 50px 0px;
+}

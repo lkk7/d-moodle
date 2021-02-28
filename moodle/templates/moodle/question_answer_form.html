@@ -5,8 +5,8 @@
 <h3>Question by {{ question.asker.first_name }} {{ question.asker.last_name }}</h3>
 <p>{{ question.text }}</p>
 
-<h3>Answer the question:</h3>
-<form action="{% url 'moodle:question_answer_form' lesson_pk=question.lesson.pk question_pk=question.pk%}" method="post">
+<h3 style="text-align: center;margin-top:100px;">Answer the question:</h2>
+<form action="{% url 'moodle:question_answer_form' lesson_pk=question.lesson.pk question_pk=question.pk %}" method="post">
   {% csrf_token %}
   {{ form.as_p }}
   <input type="submit" value="Submit">

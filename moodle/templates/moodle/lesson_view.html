@@ -1,4 +1,5 @@
 {% extends 'moodle/base.html' %}
+{% load user_check_group %}
 
 {% block content %}
 <h2>Lesson: {{ lesson.title }}</h2>
@@ -12,24 +13,38 @@
 
 {{ lesson.text|linebreaks }}
 
+{% if user|has_group:'Students' %}
 <h3>Ask teachers a question</h3>
 <form action="{% url 'moodle:lesson_view' pk=lesson.pk %}" method="post">
   {% csrf_token %}
   {{ form.as_p }}
   <input type="submit" value="Submit">
 </form>
+{% endif %}
 {% if messages %}
 {% for message in messages %}<p>{{ message }}</p>{% endfor %}
 {% endif %}
 
 <h3>Questions</h3>
+{% if questions %}
 {% for question in questions %}
-<p>{{ question.asker.first_name }} {{ question.asker.last_name }}</p>
-<p>{{ question.ask_date }}</p>
-<p>{{ question.text }}</p>
-<p>{{ question.answerer.first_name }} {{ question.answerer.last_name }}</p>
-<p>{{ question.answer_date }}</p>
-<p>{{ question.answer_text }}</p>
+<div class="question">
+  <p><strong>Asking: {{ question.asker.first_name }} {{ question.asker.last_name }}</strong></p>
+  <small>{{ question.ask_date }}</small>
+  <p>{{ question.text }}</p>
+
+  {% if question.answer_date %}
+  <p><strong>Answered: {{ question.answerer.first_name }} {{ question.answerer.last_name }}</strong></p>
+  <small>{{ question.answer_date }}</small>
+  <p>{{ question.answer_text }}</p>
+  {% elif user|has_group:'Teachers' %}
+  <a href="{% url 'moodle:question_answer_form' lesson_pk=lesson.pk question_pk=question.pk %}">Answer this question</a>
+  {% endif %}
+</div>
+<hr>
 {% endfor %}
+{% else %}
+<p>No questions yet.</p>
+{% endif %}
 
 {% endblock %}
