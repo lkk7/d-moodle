@@ -15,8 +15,8 @@ class LessonListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Lesson.objects.filter(
-            Q(course__students__id__contains=self.request.user.id)
-            | Q(course__teachers__id__contains=self.request.user.id)
+            Q(course__students__id=self.request.user.id)
+            | Q(course__teachers__id=self.request.user.id)
         ).distinct()
 
 
@@ -80,8 +80,8 @@ class CourseListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Course.objects.filter(
-            Q(students__id__contains=self.request.user.id)
-            | Q(teachers__id__contains=self.request.user.id)
+            Q(students__id=self.request.user.id)
+            | Q(teachers__id=self.request.user.id)
         ).distinct()
 
 
