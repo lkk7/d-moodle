@@ -10,6 +10,9 @@ from .forms import QuestionAskForm, LessonAddForm
 from .models import Course, Lesson, Question
 
 
+BASE_SITE_TITLE = 'd-moodle'
+
+
 class LessonListView(LoginRequiredMixin, generic.ListView):
     template_name = 'moodle/lesson_list.html'
 
@@ -18,6 +21,11 @@ class LessonListView(LoginRequiredMixin, generic.ListView):
             Q(course__students__id=self.request.user.id)
             | Q(course__teachers__id=self.request.user.id)
         ).distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['site_title'] = '{} | {}'.format(BASE_SITE_TITLE, 'Lessons')
+        return context
 
 
 class LessonDetailView(LoginRequiredMixin, generic.DetailView):
@@ -32,6 +40,8 @@ class LessonDetailView(LoginRequiredMixin, generic.DetailView):
             context['form'] = self.kwargs['form']
         else:
             context['form'] = QuestionAskForm()
+        context['site_title'] = '{} | {}'.format(
+            BASE_SITE_TITLE, 'Lesson view')
         return context
 
     def post(self, request, *args, **kwargs):
@@ -59,6 +69,12 @@ class LessonAddView(LoginRequiredMixin, generic.CreateView):
         kwargs['user_id'] = self.request.user.id
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['site_title'] = '{} | {}'.format(
+            BASE_SITE_TITLE, 'Add a lesson')
+        return context
+
 
 class QuestionAnswerFormView(LoginRequiredMixin, generic.UpdateView):
     fields = ('answer_text',)
@@ -74,6 +90,12 @@ class QuestionAnswerFormView(LoginRequiredMixin, generic.UpdateView):
         form.save()
         return redirect('moodle:lesson_view', pk=self.object.lesson.id)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['site_title'] = '{} | {}'.format(
+            BASE_SITE_TITLE, 'Answer a question')
+        return context
+
 
 class CourseListView(LoginRequiredMixin, generic.ListView):
     template_name = 'moodle/course_list.html'
@@ -84,6 +106,12 @@ class CourseListView(LoginRequiredMixin, generic.ListView):
             | Q(teachers__id=self.request.user.id)
         ).distinct()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['site_title'] = '{} | {}'.format(
+            BASE_SITE_TITLE, 'Course list')
+        return context
+
 
 class CourseDetailView(LoginRequiredMixin, generic.DetailView):
     model = Course
@@ -93,4 +121,6 @@ class CourseDetailView(LoginRequiredMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['lessons'] = Lesson.objects.filter(
             course=self.get_object())
+        context['site_title'] = '{} | {}'.format(
+            BASE_SITE_TITLE, 'Course view')
         return context
