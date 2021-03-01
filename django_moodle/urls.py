@@ -8,3 +8,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include('authentication.urls')),
 ]
+
+handler403 = 'moodle.views.fordbidden_view'
