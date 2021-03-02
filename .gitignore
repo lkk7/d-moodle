@@ -4,5 +4,7 @@
 **/__pycache__
 *.pyc
 env
+.coverage
+htmlcov
 
 secret_key.py
