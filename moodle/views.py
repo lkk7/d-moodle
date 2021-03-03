@@ -13,6 +13,7 @@ from .mixins import SiteTitleMixin, CourseAccessMixin, LessonAccessMixin
 
 
 class LessonListView(SiteTitleMixin, LoginRequiredMixin, generic.ListView):
+    """A view showing all lessons for a particular student or teacher."""
     template_name = 'moodle/lesson_list.html'
     site_title = 'Lessons'
 
@@ -25,6 +26,7 @@ class LessonListView(SiteTitleMixin, LoginRequiredMixin, generic.ListView):
 
 class LessonDetailView(LessonAccessMixin, SiteTitleMixin,
                        LoginRequiredMixin, generic.DetailView):
+    """A view showing a particular lesson in detail."""
     model = Lesson
     template_name = 'moodle/lesson_view.html'
     site_title = 'Lesson View'
@@ -53,6 +55,7 @@ class LessonDetailView(LessonAccessMixin, SiteTitleMixin,
 
 
 class LessonAddView(SiteTitleMixin, LoginRequiredMixin, generic.CreateView):
+    """A view that handles adding a new lesson to the database."""
     template_name = 'moodle/lesson_add_form.html'
     form_class = LessonAddForm
     site_title = 'Add Lesson'
@@ -73,6 +76,7 @@ class LessonAddView(SiteTitleMixin, LoginRequiredMixin, generic.CreateView):
 
 
 class QuestionAnswerFormView(SiteTitleMixin, LoginRequiredMixin, generic.UpdateView):
+    """A view that handles a teacher answering a student's question."""
     fields = ('answer_text',)
     template_name = 'moodle/question_answer_form.html'
     site_title = 'Add Question'
@@ -95,6 +99,7 @@ class QuestionAnswerFormView(SiteTitleMixin, LoginRequiredMixin, generic.UpdateV
 
 
 class CourseListView(SiteTitleMixin, LoginRequiredMixin, generic.ListView):
+    """A view showing all courses for a particular student or teacher.""""
     template_name = 'moodle/course_list.html'
     site_title = 'Courses'
 
@@ -107,6 +112,7 @@ class CourseListView(SiteTitleMixin, LoginRequiredMixin, generic.ListView):
 
 class CourseDetailView(CourseAccessMixin, SiteTitleMixin,
                        LoginRequiredMixin, generic.DetailView):
+    """A view showing a particular lesson in detail."""
     model = Course
     template_name = 'moodle/course_view.html'
     site_title = 'Course View'

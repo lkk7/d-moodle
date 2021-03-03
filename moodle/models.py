@@ -4,6 +4,10 @@ from django.utils import timezone
 
 
 class Course(models.Model):
+    """A model representing a course.
+    There are lessons pointing with a foreign key to the course. There are
+    teachers and student users pointing with a foreign key to the course.
+    """
     name = models.CharField(max_length=100)
     creation_date = models.DateField(default=timezone.now)
     teachers = models.ManyToManyField(
@@ -16,6 +20,9 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
+    """A model representing a course.
+    There are questions pointing with a foreign key to the course.
+    """
     course = models.ForeignKey(
         'moodle.Course', on_delete=models.CASCADE, related_name='lessons')
     title = models.CharField(max_length=200)
@@ -28,6 +35,9 @@ class Lesson(models.Model):
 
 
 class Question(models.Model):
+    """A model representing a question asked by a student user.
+    It points to a lesson.
+    """
     lesson = models.ForeignKey(
         'moodle.Lesson', on_delete=models.CASCADE, related_name='questions')
     asker = models.ForeignKey(
