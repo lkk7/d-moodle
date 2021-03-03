@@ -99,7 +99,7 @@ class QuestionAnswerFormView(SiteTitleMixin, LoginRequiredMixin, generic.UpdateV
 
 
 class CourseListView(SiteTitleMixin, LoginRequiredMixin, generic.ListView):
-    """A view showing all courses for a particular student or teacher.""""
+    """A view showing all courses for a particular student or teacher."""
     template_name = 'moodle/course_list.html'
     site_title = 'Courses'
 
